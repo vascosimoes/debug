@@ -189,7 +189,7 @@ function getDate() {
 
 function log(...args) {
 	if(this.socket && typeof this.socket == "object")
-	 	this.socket.emit("debugLog",util.format(...args))
+	 	this.socket.emit("debugLog",args)
 	return process.stderr.write(util.format(...args) + '\n');
 }
 
