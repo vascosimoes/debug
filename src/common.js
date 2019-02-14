@@ -4,13 +4,14 @@
  * implementations of `debug()`.
  */
 
-function setup(env) {
+function setup(env,socket) {
 	createDebug.debug = createDebug;
 	createDebug.default = createDebug;
 	createDebug.coerce = coerce;
 	createDebug.disable = disable;
 	createDebug.enable = enable;
 	createDebug.enabled = enabled;
+	createDebug.socket = socket || null;
 	createDebug.humanize = require('ms');
 
 	Object.keys(env).forEach(key => {
@@ -61,7 +62,7 @@ function setup(env) {
 	* @return {Function}
 	* @api public
 	*/
-	function createDebug(namespace) {
+	function createDebug(namespace,socket) {
 		let prevTime;
 
 		function debug(...args) {
@@ -120,6 +121,7 @@ function setup(env) {
 		debug.color = selectColor(namespace);
 		debug.destroy = destroy;
 		debug.extend = extend;
+		debug.socket = socket;
 		// Debug.formatArgs = formatArgs;
 		// debug.rawLog = rawLog;
 

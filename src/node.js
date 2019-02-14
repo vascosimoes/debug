@@ -14,6 +14,7 @@ exports.log = log;
 exports.formatArgs = formatArgs;
 exports.save = save;
 exports.load = load;
+exports.socket = null;
 exports.useColors = useColors;
 
 /**
@@ -187,8 +188,11 @@ function getDate() {
  */
 
 function log(...args) {
+	if(this.socket && typeof this.socket == "object")
+	 	this.socket.emit("debugLog",util.format(...args))
 	return process.stderr.write(util.format(...args) + '\n');
 }
+
 
 /**
  * Save `namespaces`.
@@ -198,11 +202,11 @@ function log(...args) {
  */
 function save(namespaces) {
 	if (namespaces) {
-		process.env.DEBUG = namespaces;
+		process.env.DEBUGTOMI = namespaces;
 	} else {
 		// If you set a process.env field to null or undefined, it gets cast to the
 		// string 'null' or 'undefined'. Just delete instead.
-		delete process.env.DEBUG;
+		delete process.env.DEBUGTOMI;
 	}
 }
 
@@ -214,7 +218,10 @@ function save(namespaces) {
  */
 
 function load() {
-	return process.env.DEBUG;
+	if (!process.env.DEBUGTOMI) {
+	  require('dotenv').load();
+	}
+	return process.env.DEBUGTOMI;
 }
 
 /**
