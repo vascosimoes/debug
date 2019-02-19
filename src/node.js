@@ -12,6 +12,7 @@ const util = require('util');
 exports.init = init;
 exports.log = log;
 exports.formatArgs = formatArgs;
+exports.formatArgsNode = formatArgsNode;
 exports.save = save;
 exports.load = load;
 exports.socket = null;
@@ -176,6 +177,17 @@ function formatArgs(args) {
 	}
 }
 
+function formatArgsNode(args) {
+	const {namespace: name, color} = this;
+	
+	return {
+		date: new Date(),
+		module: name,
+		color: color,
+		data: args[0]
+	};
+}
+
 function getDate() {
 	if (exports.inspectOpts.hideDate) {
 		return '';
@@ -189,7 +201,7 @@ function getDate() {
 
 function log(...args) {
 	if(this.socket && typeof this.socket == "object")
-	 	this.socket.emit("debugLog",args)
+		 this.socket.emit("debugLog",this.nodeLog)
 	return process.stderr.write(util.format(...args) + '\n');
 }
 

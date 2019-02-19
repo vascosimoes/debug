@@ -109,6 +109,9 @@ function setup(env,socket) {
 			});
 
 			// Apply env-specific formatting (colors, etc.)
+			if(typeof createDebug.formatArgsNode === "function"){
+				self.nodeLog = createDebug.formatArgsNode.call(self, args);
+			}
 			createDebug.formatArgs.call(self, args);
 
 			const logFn = self.log || createDebug.log;
